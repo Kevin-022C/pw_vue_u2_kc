@@ -84,6 +84,7 @@ export default {
    * String,number,Array,obj,Date:para mandar una fecha,Function
    * numeros grandes BigInt
    */
+  // DIRECTIVAS PARTE II
 
 };
 </script>
