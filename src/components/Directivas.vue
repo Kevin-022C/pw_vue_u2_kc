@@ -10,6 +10,16 @@
         <button @click="imprimirNombre">Imprimir Nombre</button>
         <button @click="agregarEstudiante">Agregar Estudiante</button>
  
+        
+        <br>
+        <label for="id_nombre_1">Nombre</label>
+        <input id="id_nombre_1"  type="text">
+
+        <label for="id_apellido_1">Apellido</label>
+        <input v-on:keypress.enter="agregarEstudiante1" id="id_apellido_1"  type="text">
+        
+
+
         <ul>
             <li 
 
@@ -19,6 +29,7 @@
             </li>
         </ul>
         <br>
+        
         <h2>Tabla</h2>
         <table border="1">
             <thead>
@@ -34,6 +45,8 @@
                 </tr>
             </tbody>
         </table>
+
+
 
  
         <h3>{{ arreglo.length }}</h3>
@@ -64,6 +77,26 @@ export default {
             console.log("Estudiante agregado:", estudiante);
             this.limpiarFormulario();
             console.log(this.arreglo);
+        },
+        // metodo de 3/12/25
+        // modificadoes de eventos: nacen despues del evento es decir despues del click, keypress, etc
+        agregarEstudiante1(event){
+            console.log("evento ");
+            if(event.charCode!==13){
+                return;
+            }
+            // dame haciendo con el enter
+            const estudiante = {
+                nombre: document.getElementById("id_nombre_1").value,
+                apellido: document.getElementById("id_apellido_1").value
+            } 
+            console.log("presiono el enter")
+            console.log("Agregar estudiante 1");
+            console.log(estudiante);
+            this.arreglo.push(estudiante);
+            this.limpiarFormulario();
+            console.log(event);
+            console.log(event.charCode);
         },
  
         limpiarFormulario() {
