@@ -24,7 +24,9 @@ export default {
     justify-content: center;
     align-items: center;
     border: 2px solid #42b983;
+    
     border-radius: 10px;
+    
     
 }
 
