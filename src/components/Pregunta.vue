@@ -1,67 +1,104 @@
 <template>
-  <div>
-   <img src="https://yesno.wtf/assets/yes/5-64c2804cc48057b94fd0b3eaf323d92c.gif
-    " alt="no se puede ver"/>
-    <div class="pregunta-containner">
-        <input type="text" placeholder="hasme una pregunta">
-    <p>Recuerda terminar con el signo de interrogacion (?)</p>
-    <h2>sere millonario?</h2>
-    <h1>yes,No</h1>
-    </div>  
-  </div>
-    
+    <div>
+        <img v-if="imagen" :src="imagen" alt="No se puede ver" />
+        <div class="oscuro"></div>
+ 
+ 
+        <div class="pregunta-container">
+        <input v-model="pregunta" type="text" placeholder="Hazme una pregunta"/>
+        <p>Recuerda terminar con el signo de interrogación (?)</p>
+ 
+        <h2>{{ pregunta }}</h2>
+        <h1>{{ respuesta }}</h1>
+        </div>
+    </div>
+   
 </template>
-
+ 
 <script>
+import {consumirApiFacade} from '../clients/YesNoClient.js';
 export default {
-
-}
+    data() {
+        return {
+            pregunta:null,
+            respuesta:null,
+        };
+    },
+    watch: {
+        pregunta(value, oldValue) {
+ 
+            if(value.includes('?')){
+                //llamar al API
+                this.respuesta = "Pensando...";
+                this.consumir();
+ 
+            }
+        },
+    },
+    methods: {
+        async consumir() {
+            const resp =  await consumirApiFacade();
+                console.log("Respuesta final");
+                console.log(resp);
+                console.log(resp.answer);
+                this.respuesta = resp.answer;
+                this.imagen = resp.image;
+        }
+       
+    },
+ 
+};
 </script>
-
+ 
 <style>
-img{
+img, .oscuro {
     height: 100vh;
-    width: 100vw;   
+    width: 100vw;
     max-height: 100%;
     max-width: 100%;
     position: fixed;
     left: 0px;
     top: 0px;
-  
 }
-.pregunta-containner{
+ 
+.oscuro {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+/*Hacemos que las letras se vean al frente de la imagen */
+.pregunta-container {
     position: relative;
-    z-index: 1;
     color: white;
-    text-align: center;
-    margin-top: 20px;
+    z-index: 1;
+ 
     min-height: 100vh; /* altura de toda la pantalla */
     display: flex;
     flex-direction: column; /* elementos uno debajo del otro */
     justify-content: center; /* centrado vertical */
     align-items: center; /* centrado horizontal */
-    text-align: center;
+   
 }
-input{
-    padding: 10px;
+ 
+input {
+    width: 250px;
+    padding: 10px 15px;
     border-radius: 5px;
     border: none;
-    margin-bottom: 10px;
-    width: 300px;
-    font-size: 16px;
+ 
 }
-input:focus{
+ 
+input:focus {
     outline: none;
-    box-shadow: 0 0 5px #42b983;
 }
-h1,h2,p{
+ 
+h1, h2, p {
     color: white;
-
 }
-p{
-    font-size: 20px;
+ 
+p {
+    font-size: 50px;
 }
-h2{
+ 
+h2 {
     margin-top: 150px;
 }
 </style>
