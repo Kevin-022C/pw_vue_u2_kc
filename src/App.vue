@@ -2,7 +2,8 @@
   <div>
    <!-- <ContadorView/>-->
     <!--<DirectivasView/>-->
-    <PreguntaView/>
+   <!-- <PreguntaView/>-->
+   <PokemonView></PokemonView>
   </div>
 </template>
 
@@ -10,13 +11,15 @@
 import ContadorView from '../src/view/ContadorView.vue';
 import DirectivasView from '../src/view/DirectivasView.vue';
 import PreguntaView from '../src/view/PreguntaView.vue';
+import PokemonView from './view/PokemonView.vue';
 
 export default {
   name: 'App',
   components: {
     ContadorView,
     DirectivasView,
-    PreguntaView
+    PreguntaView,
+    PokemonView
    
   }
 }
