@@ -1,18 +1,16 @@
 import axios from "axios";
  
 const consumirApi = async (id) => {
-    const respuesta = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`).then(r=> r.data);
-    console.log(respuesta);
-    return respuesta;  
+    try {
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    console.log("Respuesta:", response.data);
+    return response.data; // ← Ahora sí retorna
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 }
  
-export async function consumirApiFacade(){
-    return await consumirApi();
-}
- 
-export async function consumirApiFacade2(){
-    return await consumirApi();
-}
 function obtenerAleatorio(min,max){
     return Math.floor(Math.random()*(max-min + 1)+ min);
 }
@@ -24,14 +22,40 @@ const obtenerVectorNumerico=() =>{
     }
     return vector;
 }
-const obtenerVectorPokemon=(vectorNumerico)=>{
-    const data1 = consumirApi(vectorNumerico[0]);
-    const data2 = consumirApi(vectorNumerico[1]);
-    const data3 = consumirApi(vectorNumerico[2]);
-    const data4 = consumirApi(vectorNumerico[3]);
+const  obtenerVectorPokemon= async (vectorNumerico)=>{
+     const [pokemon1, pokemon2, pokemon3, pokemon4] = await Promise.all([
+    consumirApi(vectorNumerico[0]),
+    consumirApi(vectorNumerico[1]),
+    consumirApi(vectorNumerico[2]),
+    consumirApi(vectorNumerico[3]),
+  ]);
 
-    const obj1 = {
-        nombre:data1.name,
-        id:data1.id
-    }
+  const pokemon1Data = {
+    nombre: pokemon1.name,
+    id: pokemon1.id,
+  };
+  const pokemon2Data = {
+    nombre: pokemon2.name,
+    id: pokemon2.id,
+  };
+  const pokemon3Data = {
+    nombre: pokemon3.name,
+    id: pokemon3.id,
+  };
+  const pokemon4Data = {
+    nombre: pokemon4.name,
+    id: pokemon4.id,
+  };
+
+  return [pokemon1Data, pokemon2Data, pokemon3Data, pokemon4Data];
+}
+
+//Facade para exportar la funcion de consumir API Pokemon
+export default async function ConsumirVectorPokemonAPIFacade() {
+  const vectorPokemon = obtenerVectorNumerico();
+  return await obtenerVectorPokemon(vectorPokemon);
+}
+
+export function obtenerAleatorioFachada(min, max) {
+  return obtenerAleatorio(min, max);
 }
